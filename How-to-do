@@ -1,0 +1,67 @@
+GERENCIAMENTO REMOTO DO HYPER-V SERVER USANDO WINDOWS 10
+
+ESTAPAS NO HYPER-V SERVER
+
+1. HABILITAR GERENCIAMENTO REMOTO
+
+
+powershell   -------------- CHAMAR POWERSHELL
+
+PS:\  Configure-SMRemoting.exe -Enable
+
+OBS: TAMBEM PODEMOS FAZER VIA CONSOLE
+
+2. HABILITAR AREA DE TRABALHO REMOTA
+
+PS:\  Cscript.exe c:\Windows\System32\SCregEdit.wsf /AR 0
+
+3. HABILITAR REGRA NO FIREWALL
+
+PS:\  Enable-NetfirewallRule -DisplayGroup "Área de Trabalho Remota"
+
+OBS: PODEMOS ACESSAR REMOTO!
+
+4. LIBERAR LOG REMOTO
+
+PS:\  Set-NetFirewallRule -DisplayGroup 'Gerenciamento Remoto do Log de Eventos' -Enabled True
+
+5. LIBERAR INSTRUMENTAÇÃO DE GERENCIAMENTO DO WINDOWS
+
+PS:\  Set-NetFirewallRule -DisplayGroup 'Instrumentação de Gerenciamento do Windows (WMI)' -Enabled True
+
+6. LIBERAR PING
+
+pS:\  Set-NetFirewallRule -DisplayName 'Compartilhamento de Arquivo e Impressora (Solicitação de Eco - ICMPv4-In)' -Enabled True
+
+OBS: PODE FAZER PELO CONSOLE NO HYPER-V SERVER
+
+7. LIBERAR VOLUMES
+
+PS:\  Set-NetFirewallRule -DisplayGroup 'Gerenciamento de Volumes Remoto' -Enabled True
+
+IMPORTANTE: DESCOBRIR GRUPOS ---> get-netfirewallrule | select DisplayGroup | sort DisplayGroup -unique
+            DESCOBRIR NOMES  ---> get-netfirewallrule | select DisplayName | sort DisplayName -unique
+
+8. ADICIONAR ADMINISTRADOR LOCAL QUE DEVE SER O MESMO COM A MESMA SENHA NO WINDOWS 10
+
+### CONSOLE HYPER-V #######
+
+
+ETAPAS NO WINDOWS 10
+
+1. INSTALAR FUNÇÃO HYPER-V NO SISTEMA.
+
+
+2. EDITAR ARQUIVOS HOSTS 
+
+C:\Windows\System32\drivers\etc
+
+## ADICIONAR IP E NOME HYPER-V
+
+192.168.1.70	hyperv1
+
+3. RELAÇÃO DE CONFIANCA ENTRE WINDOWS 10 E SERVIDOR HYPER-V SERVER ATIVANDO "WINRM"
+
+C:\winrm quickconfig
+
+4. INFORMAR AO SISTEMA QUE O HYPER-V SERVER É CONFIÁVEL.
